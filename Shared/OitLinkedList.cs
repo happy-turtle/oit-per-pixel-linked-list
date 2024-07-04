@@ -41,6 +41,8 @@ namespace OrderIndependentTransparency
             }
 
             //reset StartOffsetBuffer to zeros
+            oitComputeUtils.SetBuffer(clearStartOffsetBufferKernel, startOffsetBufferId, startOffsetBuffer);
+            oitComputeUtils.SetInt("screenWidth", screenWidth);
             oitComputeUtils.Dispatch(clearStartOffsetBufferKernel, dispatchGroupSizeX, dispatchGroupSizeY, 1);
 
             // set buffers for rendering
@@ -84,8 +86,6 @@ namespace OrderIndependentTransparency
             //create buffer for addresses, this is the head of the linked list
             startOffsetBuffer = new ComputeBuffer(bufferSizeHead, bufferStrideHead, ComputeBufferType.Raw);
 
-            oitComputeUtils.SetBuffer(clearStartOffsetBufferKernel, startOffsetBufferId, startOffsetBuffer);
-            oitComputeUtils.SetInt("screenWidth", screenWidth);
             dispatchGroupSizeX = Mathf.CeilToInt(screenWidth / 32.0f);
             dispatchGroupSizeY = Mathf.CeilToInt(screenHeight / 32.0f);
         }
